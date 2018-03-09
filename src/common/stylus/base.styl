@@ -1,0 +1,32 @@
+@import "mixins.styl"
+
+.btn-fw
+  wh(100%, auto)
+  min-width 5rem
+  background #409EFF
+  border-radius 5rem
+  border transparent 0
+  text-align center
+  color: #fff
+  padding 0.8rem 0
+  font-size 1rem
+  line-height 1rem
+  cursor pointer
+  outline none
+  transition all .8s
+
+.btn-fw:hover
+  background #227aff
+  transition all .8s
+
+.btn-fw:disabled
+  cursor: not-allowed
+  opacity: 0.6
+
+.hoverable
+  box-shadow: 0 0 .1rem .1rem rgba(10, 10, 10, 0.1)
+  transition box-shadow .5s
+
+.hoverable:hover
+  box-shadow: 0 0 4em .2rem rgba(10, 10, 10, 0.1)
+  transition box-shadow .5s
