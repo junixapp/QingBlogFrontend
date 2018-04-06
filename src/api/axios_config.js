@@ -7,7 +7,6 @@ import router from '../router'
 //对axios进行统一配置
 axios.defaults.baseURL = "/api";
 
-
 //请求拦截器
 axios.interceptors.request.use(config => {
   if(config.method!=="get"){
@@ -43,7 +42,6 @@ axios.interceptors.response.use(function (response) {
         break;
     }
   }
-
   return Promise.reject(err);
 });
 

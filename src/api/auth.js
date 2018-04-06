@@ -1,5 +1,5 @@
 import axios from './axios_config'
-
+import store from '../store'
 //登录
 function login(username, password, cb) {
   axios.post("/auth/login", {
@@ -7,6 +7,10 @@ function login(username, password, cb) {
     password: password
   }).then((response) => {
     cb(response.data)
+    // 将token和user存储起来
+    store.commit('saveToken',response.headers.token)
+    store.commit('saveUser', response.data.data)
+
   })
 }
 
