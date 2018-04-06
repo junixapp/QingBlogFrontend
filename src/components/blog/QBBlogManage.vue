@@ -28,6 +28,12 @@
     },
     methods:{
       gotoEdit(){
+        //check login
+        if(!this.$store.state.token){
+          this.$router.push('login')
+          return
+        }
+
         this.currentView = "QBBlogEdit"
         this.isShowTitle = true
         this.editedBlog = null

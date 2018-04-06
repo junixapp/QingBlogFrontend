@@ -48,6 +48,7 @@ router.beforeEach((to, from, next) => {
       return
     }
   }
+
   next() // 确保一定要调用 next()
 })
 
