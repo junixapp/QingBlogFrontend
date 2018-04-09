@@ -191,14 +191,15 @@
       flex-center-v()
       .circle-button
         wh(4rem, 4rem)
-        border-radius 2rem
+        border-radius 50%
         display block
         margin-left 0
         margin-top: 3rem
+        box-shadow: .04rem .05rem .04rem .04rem rgba(10, 10, 10, 0.3)
 
   //定制quill editor样式
   .preview-wrapper
-    font-size 1rem
+    font-size 2rem
     border 0
     margin 0 3rem
 
