@@ -17,7 +17,8 @@ import {
   Form,FormItem,Input,
   Message,
   Table, TableColumn,
-  Pagination
+  Pagination,
+  Popover
 } from 'element-ui'
 Vue.use(Dialog);
 Vue.use(MenuItem);
@@ -35,6 +36,7 @@ Vue.use(Input);
 Vue.use(Table);
 Vue.use(TableColumn);
 Vue.use(Pagination);
+Vue.use(Popover);
 Vue.component(Message.name, Message);
 Vue.prototype.$message = Message
 
