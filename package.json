@@ -10,8 +10,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "autosize": "^4.0.1",
     "axios": "^0.16.2",
     "element-ui": "^2.0.8",
+    "marked": "^0.3.19",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
