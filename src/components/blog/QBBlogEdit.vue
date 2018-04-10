@@ -4,7 +4,7 @@
       <el-form-item prop="title">
         <el-input type="text" v-model="ruleForm.title" auto-complete="off" placeholder="请输入博客标题"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="inputValue">
         <div class="tag-wrapper">
           <el-tag
             :key="tag"
@@ -16,7 +16,7 @@
           <el-input
             class="input-new-tag"
             v-if="inputVisible"
-            v-model="inputValue"
+            v-model="ruleForm.inputValue"
             ref="saveTagInput"
             size="small"
             @keyup.enter.native="handleInputConfirm"
@@ -26,10 +26,34 @@
           <el-button v-else class="button-new-tag" size="small" @click="showInput">添加标签</el-button>
         </div>
       </el-form-item>
-      <!--博客编辑区-->
-      <div ref="editor" class="editor">
-        {{ruleForm.content}}
+
+      <!--markdwon语法提示区-->
+      <el-popover
+        ref="p1"
+        placement="right"
+        title=""
+        width="500"
+        trigger="hover"
+        content="">
+        <el-table :data="syntaxData">
+          <el-table-column width="100" property="name" label="名称"></el-table-column>
+          <el-table-column width="auto" property="syntax" label="语法">
+            <template slot-scope="scope">
+              <span v-html="scope.row.syntax"></span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-popover>
+      <div class="tips">请使用<b>Markdown</b>语法来编辑博客内容。
+        <span v-popover:p1 class="tips-help">语法提示</span>
       </div>
+
+      <!--博客编辑区-->
+      <el-form-item prop="content" class="textarea_wrapper">
+        <!--<el-input type="textarea" v-model="ruleForm.content" class="textarea" ref="textarea"></el-input>-->
+        <AutosizeTextarea v-model="ruleForm.content" @textChange="onChange"></AutosizeTextarea>
+      </el-form-item>
+
 
     </el-form>
     <div class="operate-wrapper">
@@ -40,16 +64,17 @@
     </div>
 
     <el-dialog
-      :title="ruleForm.title"
       :visible.sync="centerDialogVisible"
       width="80%"
+      fullscreen
       center>
       <!--博客预览区-->
-      <div class="ql-container ql-snow preview-wrapper">
-        <div class="ql-editor" data-gramm="false" contenteditable="false" v-html="content">
-          {{content}}
+      <div class="preview">
+        <div class="markdown-body" v-html="htmlize">
         </div>
       </div>
+
+      <span slot="title" v-html="dialogTitle" class="dialog-title"></span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="centerDialogVisible = false">关闭</el-button>
       </span>
@@ -59,70 +84,117 @@
 
 <script>
   import BlogApi from '../../api/blog'
-  import 'quill/dist/quill.snow.css'
-  import Quill from 'quill'
+  import AutosizeTextarea from './AutosizeTextarea'
+  import markd from 'marked'
+  import './github.css'
 
-  let quill;
+  markd.setOptions({
+    breaks: true,
+    headerIds: false,
+  });
 
   export default {
     name: "QBBlogEdit",
     props: ["editedBlog"],
+    components: {
+      AutosizeTextarea
+    },
     data() {
       return {
         type: 1,// 1: 表示新添加 2：表示更新,
         centerDialogVisible: false,
         inputVisible: false,
-        content: "",
         tags: [],
-        inputValue: '',
         ruleForm: {
-          title: ""
+          title: "",
+          content: "",
+          inputValue: ''
         },
         rules: {
           title: [
             {validator: this.validateTitle, trigger: 'blur'}
           ],
-        }
+          content: [
+            {validator: this.validateContent, trigger: 'blur'}
+          ],
+          inputValue: [
+            {validator: this.validateInput, trigger: 'blur'}
+          ]
+        },
+        syntaxData: [
+          {
+            name: '插入链接',
+            syntax: '[ <b>链接的文字</b> ]( http://www.baidu.com/ )',
+          },
+          {
+            name: '插入图片',
+            syntax: '![]( <b>图片的本地路径或者url</b> )',
+          },
+          {
+            name: '任务列表',
+            syntax: '<pre><b>已完成</b>： - [x] 选项一    \n<b>未完成</b>： - [ ] 选项二</pre>',
+          },
+          {
+            name: '表格',
+            syntax: '<pre>|    a    |       b       |      c     |\n' +
+            '|:-------:|:------------- | ----------:|\n' +
+            '|   居中  |     左对齐    |   右对齐   |</pre>',
+          },
+          {
+            name: '加粗',
+            syntax: '**加粗的部分**',
+          },
+          {
+            name: '斜体',
+            syntax: '*斜体的部分*',
+          },
+        ]
       }
     },
     computed: {
       getText() {
         return this.type === 1 ? "添加" : "更新"
+      },
+      htmlize(){
+        return markd(this.ruleForm.content)
+      },
+      dialogTitle(){
+        return `<h2><b>${this.ruleForm.title}</b></h2>`
       }
     },
     mounted() {
-      this.type = this.editedBlog ? 2: 1
+      this.type = this.editedBlog ? 2 : 1
       //初始化数据
       if (this.type === 2) {
         this.ruleForm.title = this.editedBlog.title
         this.tags = this.editedBlog.tags
-        this.content = this.editedBlog.content
+        this.ruleForm.content = this.editedBlog.content
       }
-      //初始化quill
-      quill = new Quill(this.$refs.editor, {
-        modules: {
-          toolbar: [
-            [{header: [1, 2, 3, false]}],
-            [{'background': []} ],
-            ['bold', 'italic', 'link', 'blockquote','code-block', 'image'],
-            [{list: 'ordered'}, {list: 'bullet'}]
-          ]
-        },
-        placeholder: 'Write something...',
-        theme: 'snow'
-      });
-      quill.on('text-change', (delta, oldDelta, source) => {
-        if (source === 'api') {
-          this.$log("quill change from api!")
-        } else if (source === 'user') {
-          this.$log("quill change from user!")
-          this.content = quill.root.innerHTML
-        }
-      });
-      //初始化内容
-      quill.root.innerHTML = this.content
+
     },
     methods: {
+      validateTitle(rule, value, callback) {
+        if (value === '') {
+          callback(new Error('请输入标题'));
+        } else {
+          callback()
+        }
+      },
+      validateContent(rule, value, callback) {
+        if (value === '') {
+          callback(new Error('请输入内容'));
+        } else {
+          callback()
+        }
+      },
+      validateInput(rule, value, callback) {
+        this.$log(this.tags.length)
+        if (this.tags.length === 0) {
+          callback(new Error('至少添加一个标签'));
+        } else {
+          callback()
+        }
+      },
       handleClose(tag) {
         this.tags.splice(this.tags.indexOf(tag), 1);
       },
@@ -133,48 +205,49 @@
         });
       },
       handleInputConfirm() {
-        let inputValue = this.inputValue;
+        let inputValue = this.ruleForm.inputValue;
         if (inputValue) {
           this.tags.push(inputValue);
         }
         this.inputVisible = false;
-        this.inputValue = '';
+        this.ruleForm.inputValue = '';
       },
       onPreviewClick() {
-        this.centerDialogVisible = true
+        this.$refs.ruleForm.validateField('content', (errMsg) => {
+          this.centerDialogVisible = !errMsg
+        })
       },
       onSaveClick() {
-        //保存或者更新
-        if(this.ruleForm.title===""){
-          this.$message.error("标题不能为空")
-          return
-        }
-        if(!this.content){
-          this.$message.error("博客内容不能为空！")
-          return
-        }
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            let blog = {
+              title: this.ruleForm.title,
+              tags: this.tags,
+              content: this.ruleForm.content
+            }
+            if (this.type === 1) {
+              BlogApi.addBlog(blog, (data) => {
+                this.$message.success(data.msg)
+              })
+            } else {
+              BlogApi.updateBlog(this.editedBlog.id, blog, (data) => {
+                this.$message.success(data.msg)
+              })
+            }
+          } else {
+            return false;
+          }
+        });
 
-        let blog = {
-          title: this.ruleForm.title,
-          tags: this.tags,
-          content: this.content
-        }
-        if(this.type===1){
-          BlogApi.addBlog(blog, (data)=>{
-            this.$message.success(data.msg)
-          })
-        }else {
-          BlogApi.updateBlog(this.editedBlog.id, blog, (data)=>{
-            this.$message.success(data.msg)
-          })
-        }
+      },
+      onChange(val) {
+        this.ruleForm.content = val;
       }
     }
   }
 </script>
 
 <style scoped lang="stylus">
-
   @import "../../common/stylus/mixins.styl"
   .edit-wrapper
     wh(100%, auto)
@@ -183,11 +256,27 @@
       padding 2rem 0
       .el-form-item
         wh(50rem, auto)
-      .editor
-        wh(50rem, 30rem)
+      .tips
+        color #888
+        font-size 0.9rem
+        margin-bottom: .5rem;
+        .tips-help
+          display inline-block
+          background-color: #efefef;
+          padding .1rem .5rem
+          cursor pointer
+          margin-left: .6rem;
+
+    .preview
+      wh(100%, 100%)
+      padding:3rem
+
     .operate-wrapper
-      wh(4rem, 42rem)
-      margin-left 3rem
+      position fixed
+      wh(4rem, auto)
+      right 8rem
+      top: 50%;
+      transform translateY(-65%)
       flex-center-v()
       .circle-button
         wh(4rem, 4rem)
@@ -197,11 +286,9 @@
         margin-top: 3rem
         box-shadow: .04rem .05rem .04rem .04rem rgba(10, 10, 10, 0.3)
 
-  //定制quill editor样式
-  .preview-wrapper
+  .dialog-title
     font-size 2rem
-    border 0
-    margin 0 3rem
+
 
   .el-tag
     margin-right: 0.5rem
