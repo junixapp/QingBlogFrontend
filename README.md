@@ -2,6 +2,9 @@
 
 基于Vue2套件，Axios, ElementUI编写的单页应用。
 
+**后端项目为**：[QingBlog后端](https://github.com/li-xiaojun/QingBlogBackend)
+
+
 
 ## 管理后台截图
 ![](screenshot/login.jpg)
