@@ -8,12 +8,16 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-
+let currentSpa = 'fed';
+//配置prod编译产出的SPA页面根目录
+config.build.assetsSubDirectory = currentSpa;
+//配置prod编译产出的SPA页面的html
+config.build.index = path.resolve(__dirname, `../dist/${currentSpa}/index.html`)
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    app: `./src/${currentSpa}`
   },
   output: {
     path: config.build.assetsRoot,
