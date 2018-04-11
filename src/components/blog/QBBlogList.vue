@@ -2,6 +2,7 @@
   <div class="list-wrapper">
     <div class="table-wrapper">
       <el-table
+        v-loading="loading"
         :data="blogs"
         style="width: 100%">
         <el-table-column
@@ -9,16 +10,24 @@
           header-align="center"
           align="center"
           sortable
-          width="50">
+          width="80">
         </el-table-column>
         <el-table-column
           header-align="center"
           align="center"
           prop="title"
           label="标题"
-          width="250">
+          width="150">
         </el-table-column>
-
+        <el-table-column
+          header-align="center"
+          align="center"
+          label="分类"
+          width="150">
+          <template slot-scope="scope">
+            <span>{{ scope.row.category?scope.row.category.name: "无" }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           header-align="center"
           align="center"
@@ -99,6 +108,7 @@
     name: "QBBlogList",
     data() {
       return {
+        loading: true,
         blogs: [],
         page: 1,
         totalNum: 0,
@@ -112,16 +122,29 @@
     methods: {
       getBlogList() {
         BlogApi.getBlogs(this.page, (data) => {
-          this.totalNum = data.data.total
           this.blogs = []
           this.blogs.push(...data.data.blogs)
+          this.totalNum = data.data.total
+          this.loading = false
         })
       },
       handleEdit(index) {
+        //check login
+        if(!this.$store.state.token){
+          this.$router.push('login')
+          return
+        }
+
         //进入编辑界面
         this.$emit("editBlog", this.blogs[index])
       },
       handleDelete(index) {
+        //check login
+        if(!this.$store.state.token){
+          this.$router.push('login')
+          return
+        }
+
         //弹出确认对话框
         this.centerDialogVisible = true
         this.deleteIndex = index;
@@ -129,9 +152,12 @@
       doDelete() {
         this.centerDialogVisible = false
         BlogApi.deleteBlog(this.blogs[this.deleteIndex]._id, (data) => {
-          this.blogs.splice(this.deleteIndex, 1)
           this.$message.success("删除成功！")
           this.deleteIndex = -1
+
+          // this.blogs.splice(this.deleteIndex, 1)
+          // 重新请求，会重新计算当前页面和page更新
+          this.getBlogList()
         })
       },
       handleCurrentChange(val) {
@@ -142,7 +168,6 @@
         return new Date(cellValue).toLocaleString()
       }
     }
-
   }
 </script>
 
@@ -164,7 +189,4 @@
       wh(100%, auto)
       padding: 1.5rem
       text-align center
-      .el-pagination.is-background .btn-next,.el-pagination.is-background .btn-prev,.el-pagination.is-background .el-pager li
-        border-radius  2rem
-        color red
 </style>

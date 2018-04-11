@@ -2,7 +2,7 @@
   <div class="edit-wrapper">
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="0px">
       <el-form-item prop="title">
-        <el-input type="text" v-model="ruleForm.title" auto-complete="off" placeholder="请输入博客标题"></el-input>
+        <el-input type="text" v-model="ruleForm.title" auto-complete="off" placeholder="请输入博客标题" autofocus="true"></el-input>
       </el-form-item>
       <el-form-item prop="inputValue">
         <div class="tag-wrapper">
@@ -25,6 +25,18 @@
           </el-input>
           <el-button v-else class="button-new-tag" size="small" @click="showInput">添加标签</el-button>
         </div>
+      </el-form-item>
+
+      <!--分类选择-->
+      <el-form-item prop="category">
+      <el-select v-model="ruleForm.category" placeholder="请选择分类" v-loading="loadingCategory">
+        <el-option
+          v-for="item in categories"
+          :key="item._id"
+          :label="item.name"
+          :value="item._id">
+        </el-option>
+      </el-select>
       </el-form-item>
 
       <!--markdwon语法提示区-->
@@ -69,9 +81,10 @@
       fullscreen
       center>
       <!--博客预览区-->
-      <div class="preview">
-        <div class="markdown-body" v-html="htmlize">
-        </div>
+      <div class="preview ">
+        <article class="markdown-body"  v-html="htmlize">
+
+        </article>
       </div>
 
       <span slot="title" v-html="dialogTitle" class="dialog-title"></span>
@@ -84,6 +97,7 @@
 
 <script>
   import BlogApi from '../../api/blog'
+  import CategoryApi from '../../api/category'
   import AutosizeTextarea from './AutosizeTextarea'
   import markd from 'marked'
   import './github.css'
@@ -104,12 +118,15 @@
         type: 1,// 1: 表示新添加 2：表示更新,
         centerDialogVisible: false,
         inputVisible: false,
+        loadingCategory:true,
         tags: [],
         ruleForm: {
           title: "",
           content: "",
-          inputValue: ''
+          inputValue: '',
+          category:''
         },
+        categories:[],
         rules: {
           title: [
             {validator: this.validateTitle, trigger: 'blur'}
@@ -119,6 +136,9 @@
           ],
           inputValue: [
             {validator: this.validateInput, trigger: 'blur'}
+          ],
+          category: [
+            {validator: this.validateCategory, trigger: 'blur'}
           ]
         },
         syntaxData: [
@@ -164,12 +184,24 @@
     },
     mounted() {
       this.type = this.editedBlog ? 2 : 1
-      //初始化数据
+      //初始化数据， 是编辑
       if (this.type === 2) {
         this.ruleForm.title = this.editedBlog.title
         this.tags = this.editedBlog.tags
         this.ruleForm.content = this.editedBlog.content
+        // if(this.editedBlog.category){
+        //   this.ruleForm.category = this.editedBlog.category._id;
+        // }
       }
+      // 获取categories
+      CategoryApi.getAllCategories((data) => {
+        this.categories.push(...data.data.categories)
+        this.loadingCategory = false;
+
+        if(this.type === 2 && this.editedBlog.category){
+          this.ruleForm.category = this.editedBlog.category._id;
+        }
+      })
 
     },
     methods: {
@@ -188,9 +220,15 @@
         }
       },
       validateInput(rule, value, callback) {
-        this.$log(this.tags.length)
         if (this.tags.length === 0) {
           callback(new Error('至少添加一个标签'));
+        } else {
+          callback()
+        }
+      },
+      validateCategory(rule, value, callback) {
+        if (value === '') {
+          callback(new Error('请选择博客的分类'));
         } else {
           callback()
         }
@@ -223,14 +261,16 @@
             let blog = {
               title: this.ruleForm.title,
               tags: this.tags,
-              content: this.ruleForm.content
+              content: this.ruleForm.content,
+              category: this.ruleForm.category
             }
             if (this.type === 1) {
               BlogApi.addBlog(blog, (data) => {
                 this.$message.success(data.msg)
               })
             } else {
-              BlogApi.updateBlog(this.editedBlog.id, blog, (data) => {
+
+              BlogApi.updateBlog(this.editedBlog._id, blog, (data) => {
                 this.$message.success(data.msg)
               })
             }
@@ -303,9 +343,18 @@
   .input-new-tag
     wh(6rem, 2rem)
 
-  .dialog-content
-    wh(100%, 100%)
-    word-break: break-all;
-    word-wrap: break-word;
 
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
 </style>
