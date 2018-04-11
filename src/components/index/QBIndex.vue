@@ -1,95 +1,117 @@
 <template>
   <div class="container">
-    <nav class="menu">
-      <el-menu
-        default-active="QBBlogManage"
-        background-color="#4c535a"
-        text-color="#fff"
-        @select="onSelect"
-        active-text-color="#409EFF">
-        <el-menu-item index="QBBlogManage">
-          <i class="el-icon-document"></i>
-          <span slot="title">Blog管理</span>
-        </el-menu-item>
-        <el-menu-item index="QBCategoryManage">
-          <i class="el-icon-menu"></i>
-          <span slot="title">分类管理</span>
-        </el-menu-item>
-        <el-menu-item index="QBSetting">
-          <i class="el-icon-setting"></i>
-          <span slot="title">网站设置</span>
-        </el-menu-item>
-      </el-menu>
-
-    </nav>
-    <main class="main">
-      <!--<keep-alive>-->
-        <component :is="currentView">
-        </component>
-      <!--</keep-alive>-->
-    </main>
+    <div class="left">
+      <div class="top"></div>
+      <div class="bottom">
+        <h1 class="name">Dance</h1>
+        <h1 class="intro">
+          coding is life , <br/><br/>
+          and I love my life ,  <br/><br/>
+          and make a good app .
+        </h1>
+        <h1 class="contact">
+          <div class="github-icon icon"></div>
+          <div class="juejin-icon icon"></div>
+        </h1>
+      </div>
+      <div class="avatar"></div>
+      <h1 class="qingblog-link" @click="gotoQingBlogLink">@ QingBlog</h1>
+    </div>
+    <div class="main">
+      <div class="nav-wrapper"></div>
+    </div>
   </div>
 </template>
 
 <script>
-
-  import QBBlogManage from '../blog/QBBlogManage'
-
-  export default {
-    name: 'QBIndex',
-    data() {
-      return {
-        currentView: "QBBlogManage"
-      }
-    },
-    components:{
-      QBBlogManage,
-      QBCategoryManage: () => import('../category/QBCategoryManage'),
-      QBSetting: () => import('../setting/QBSetting'),
-    },
-    mounted() {
-
-    },
-    methods: {
-      onSelect(index){
-        if(index==='QBSetting'){
-          if(!this.$store.state.token){
-            this.$router.push('login')
-            return
+    export default {
+        name: "QBIndex",
+        data() {
+            return {}
+        },
+        methods: {
+          gotoQingBlogLink(){
+            window.open("https://github.com/li-xiaojun/QingBlogFrontend")
           }
         }
-        this.currentView = index
-      },
-      logout() {
-        this.$store.commit("logout")
-      },
     }
-
-  }
 </script>
 
 <style scoped lang="stylus">
-  @import "../../common/stylus/mixins.styl"
+    @import "../../common/stylus/mixins.styl"
   .container
-    wh(100%, 100%)
-    overflow-x hidden
-    overflow-y hidden
-    .menu
-      position absolute
-      left 0
-      top 0
-      wh(15%, 100%)
-      background #4c535a
-      .el-menu
-        border-right 0
-        .el-menu-item
-          text-align center
-          padding-right 3.5rem
+    fullwh()
+    display flex
+    .left
+      wh(18rem, 100%)
+      position: relative
+      box-shadow: 0 0 .3em .2em rgba(10, 10, 10, 0.1)
+      transition all .6s
+      &:hover
+        box-shadow: 0 0 1.5em .5em rgba(10, 10, 10, 0.1)
+      .top
+        height:10rem
+        background-color: #6b677d;
+      .bottom
+        text-align center
+        padding-top: 5.5rem;
+        position: relative
+        .name
+          font-size 2rem
+          color #555
+        .intro
+          font-size 1rem
+          color #999
+          margin-top 4rem
+        .contact
+          margin-top 4rem
+          display flex
+          justify-content center
+          .icon
+            wh(2rem, 2rem)
+            opacity .6
+            cursor pointer
+          .icon:hover
+            opacity 1
+          .github-icon
+            bg-image("github_ico.png")
+          .juejin-icon
+            margin-left: 2rem;
+            bg-image("juejin_ico.png")
+
+
+
+      .qingblog-link
+        position: absolute
+        bottom 4rem
+        color #888
+        cursor pointer
+        left 50%
+        transform translateX(-50%)
+      .qingblog-link:hover
+        color #6b677d
+
+      .avatar
+        wh(8rem, 8rem)
+        position: absolute
+        left 50%
+        transform translateX(-50%)
+        top 6rem
+        border .35rem solid #ffffff
+        border-radius 50%
+        background-image url("avatar.png")
+        background-repeat no-repeat
+        background-size cover
+
     .main
-      wh(85%, 100%)
-      position absolute
-      left 15%
-      top 0
+      height: 100%
+      flex-grow 1
+      overflow-y auto
+      background-color: #ccc;
+      .nav-wrapper
+        height: 4rem
+        background-color: #fff;
+        border-bottom 1px solid #ccc
 
 
 </style>

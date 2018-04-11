@@ -13,25 +13,10 @@ const router = new Router({
       name: 'index',
       component: () => import("../../components/index/QBIndex"),
       meta: {
-        pageTitle: '首页'
+        pageTitle: '李晓俊'
       }
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import("../../components/auth/QBLogin"),
-      meta: {
-        pageTitle: '登录'
-      }
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: () => import("../../components/auth/QBRegister"),
-      meta: {
-        pageTitle: '注册'
-      }
-    },
+
   ]
 })
 
