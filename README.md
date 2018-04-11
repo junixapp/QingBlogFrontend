@@ -1,17 +1,24 @@
 # QingBlog前端
 
-基于Vue2，ElementUI编写的单页应用。
+基于Vue2套件，Axios, ElementUI编写的单页应用。
 
 
+## 管理后台截图
+![](screenshot/login.jpg)
+![](screenshot/blog.jpg)
+![](screenshot/cate.jpg)
+![](screenshot/edit.jpg)
+![](screenshot/preview.png)
 
-## Build Setup
+
+## 构建步骤
 
 ``` bash
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
-npm run dev
+#
+npm start
 
 # build for production with minification
 npm run build
@@ -20,4 +27,3 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
