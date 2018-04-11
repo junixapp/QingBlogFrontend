@@ -11,9 +11,9 @@ const router = new Router({
     {
       path: '/',
       name: 'index',
-      component: () => import("../../components/index/QBIndex"),
+      component: () => import("../../components/index/QBAdmin"),
       meta: {
-        pageTitle: '首页'
+        pageTitle: '管理后台'
       }
     },
     {
