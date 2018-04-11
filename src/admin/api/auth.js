@@ -1,5 +1,5 @@
 import axios from './axios_config'
-import store from '../store'
+import store from '../store/index'
 //登录
 function login(username, password, cb) {
   axios.post("/auth/login", {

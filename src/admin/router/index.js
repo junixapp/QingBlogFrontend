@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '../store'
+import store from '../store/index'
 
 Vue.use(Router);
 
@@ -11,7 +11,7 @@ const router = new Router({
     {
       path: '/',
       name: 'index',
-      component: () => import("../components/index/QBIndex"),
+      component: () => import("../../components/index/QBIndex"),
       meta: {
         pageTitle: '首页'
       }
@@ -19,7 +19,7 @@ const router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: () => import("../components/auth/QBLogin"),
+      component: () => import("../../components/auth/QBLogin"),
       meta: {
         pageTitle: '登录'
       }
@@ -27,7 +27,7 @@ const router = new Router({
     {
       path: '/register',
       name: 'register',
-      component: () => import("../components/auth/QBRegister"),
+      component: () => import("../../components/auth/QBRegister"),
       meta: {
         pageTitle: '注册'
       }

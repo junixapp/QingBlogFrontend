@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import App from './App'
-import router from './router'
-import store from './store'
-import log from './util/logger'
+import App from '../App'
+import router from './router/index'
+import store from './store/index'
+import log from '../util/logger'
 
 //引入公共CSS
-import './common/css/reset.css'
-import './common/stylus/base.styl'
+import '../common/css/reset.css'
+import '../common/stylus/base.styl'
 
 import {
   Dialog,

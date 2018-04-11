@@ -1,8 +1,8 @@
 'use strict'
 import axios from 'axios'
 import { Message} from 'element-ui'
-import store from '../store'
-import router from '../router'
+import store from '../store/index'
+import router from '../router/index'
 
 //对axios进行统一配置
 axios.defaults.baseURL = "/api";
