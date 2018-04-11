@@ -102,7 +102,7 @@
 </template>
 
 <script>
-  import BlogApi from '../../api/blog'
+  import BlogApi from '../../admin/api/blog'
 
   export default {
     name: "QBBlogList",

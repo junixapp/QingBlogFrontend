@@ -96,8 +96,8 @@
 </template>
 
 <script>
-  import BlogApi from '../../api/blog'
-  import CategoryApi from '../../api/category'
+  import BlogApi from '../../admin/api/blog'
+  import CategoryApi from '../../admin/api/category'
   import AutosizeTextarea from './AutosizeTextarea'
   import markd from 'marked'
   import './github.css'

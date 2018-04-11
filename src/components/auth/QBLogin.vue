@@ -27,7 +27,7 @@
 <script>
   require('./gt')
   import StrUtil from '../../util/StrUtil'
-  import AuthApi from '../../api/auth'
+  import AuthApi from '../../admin/api/auth'
 
   export default {
     name: "QBLogin",

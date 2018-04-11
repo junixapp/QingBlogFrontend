@@ -90,7 +90,7 @@
 </template>
 
 <script>
-  import CategoryApi from '../../api/category'
+  import CategoryApi from '../../admin/api/category'
 
   export default {
     name: "QBCategoryManage",
