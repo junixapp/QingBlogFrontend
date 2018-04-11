@@ -3,8 +3,15 @@
 import axios from './axios_config'
 
 
-function getCategories(cb) {
-  axios.get("/categories")
+function getCategories(page, cb) {
+  axios.get(`/categories?page=${page}`)
+    .then((response)=>{
+      cb(response.data)
+    })
+}
+
+function getAllCategories( cb) {
+  axios.get(`/categories?isGetAll=true`)
     .then((response)=>{
       cb(response.data)
     })
@@ -33,5 +40,5 @@ function updateCategory(id, category, cb ) {
 }
 
 export default {
-  getCategories, addCategory, deleteCategory, updateCategory
+  getCategories, addCategory, deleteCategory, updateCategory,getAllCategories
 }
