@@ -15,26 +15,25 @@
           <i class="el-icon-menu"></i>
           <span slot="title">分类管理</span>
         </el-menu-item>
-        <el-menu-item index="QBProfileInfo">
-          <i class="el-icon-info"></i>
-          <span slot="title">个人信息</span>
+        <el-menu-item index="QBSetting">
+          <i class="el-icon-setting"></i>
+          <span slot="title">网站设置</span>
         </el-menu-item>
       </el-menu>
 
     </nav>
     <main class="main">
-      <!--<el-button  type="primary" v-if="!$store.state.user" @click="gotoLogin">登录</el-button>-->
-      <!--<el-button  type="primary"  v-if="$store.state.user" @click="logout">注销</el-button>-->
-      <keep-alive>
+      <!--<keep-alive>-->
         <component :is="currentView">
-
         </component>
-      </keep-alive>
+      <!--</keep-alive>-->
     </main>
   </div>
 </template>
 
 <script>
+
+  import QBBlogManage from '../blog/QBBlogManage'
 
   export default {
     name: 'QBIndex',
@@ -44,23 +43,26 @@
       }
     },
     components:{
-      QBBlogManage: () => import('../blog/QBBlogManage'),
+      QBBlogManage,
       QBCategoryManage: () => import('../category/QBCategoryManage'),
-      QBProfileInfo: () => import('../profile/QBProfileInfo'),
+      QBSetting: () => import('../setting/QBSetting'),
     },
     mounted() {
 
     },
     methods: {
       onSelect(index){
+        if(index==='QBSetting'){
+          if(!this.$store.state.token){
+            this.$router.push('login')
+            return
+          }
+        }
         this.currentView = index
       },
       logout() {
         this.$store.commit("logout")
       },
-      gotoLogin() {
-        this.$router.push({name: 'login'})
-      }
     }
 
   }
