@@ -18,7 +18,7 @@ import {
   Message,
   Table, TableColumn,
   Pagination,
-  Popover
+  Popover, Loading
 } from 'element-ui'
 Vue.use(Dialog);
 Vue.use(MenuItem);
@@ -37,6 +37,7 @@ Vue.use(Table);
 Vue.use(TableColumn);
 Vue.use(Pagination);
 Vue.use(Popover);
+Vue.use(Loading);
 Vue.component(Message.name, Message);
 Vue.prototype.$message = Message
 
