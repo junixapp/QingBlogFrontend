@@ -82,9 +82,7 @@
       center>
       <!--博客预览区-->
       <div class="preview ">
-        <article class="markdown-body"  v-html="htmlize">
-
-        </article>
+        <BlogPreview :content="ruleForm.content"></BlogPreview>
       </div>
 
       <span slot="title" v-html="dialogTitle" class="dialog-title"></span>
@@ -99,8 +97,9 @@
   import BlogApi from '../../admin/api/blog'
   import CategoryApi from '../../admin/api/category'
   import AutosizeTextarea from './AutosizeTextarea'
+  import BlogPreview from './QBBlogPreview'
   import markd from 'marked'
-  import './github.css'
+
 
   markd.setOptions({
     breaks: true,
@@ -111,7 +110,7 @@
     name: "QBBlogEdit",
     props: ["editedBlog"],
     components: {
-      AutosizeTextarea
+      AutosizeTextarea, BlogPreview
     },
     data() {
       return {
@@ -174,9 +173,6 @@
     computed: {
       getText() {
         return this.type === 1 ? "添加" : "更新"
-      },
-      htmlize(){
-        return markd(this.ruleForm.content)
       },
       dialogTitle(){
         return `<h2><b>${this.ruleForm.title}</b></h2>`
@@ -281,7 +277,7 @@
 
       },
       onChange(val) {
-        this.ruleForm.content = val;
+        this.ruleForm.content = markd(val);
       }
     }
   }
@@ -344,17 +340,5 @@
     wh(6rem, 2rem)
 
 
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
 </style>
