@@ -2,8 +2,8 @@
 import axios from './axios_config'
 
 //获取博客列表
-function getBlogs(page, cb) {
-  axios.get(`/blogs?page=${page}`)
+function getBlogs(page, categoryId, cb) {
+  axios.get(`/blogs?page=${page}&category=${categoryId}`)
     .then((response)=>{
       cb(response.data)
     })

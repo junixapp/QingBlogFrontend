@@ -1,12 +1,15 @@
 <template>
   <div class="container">
-    <div class="left">
+    <div class="left hoverable">
       <div class="top"></div>
       <div class="bottom">
         <h1 class="name">Dance</h1>
         <h1 class="intro">
+          90后，现居深圳 。<br/><br/>
+          -----------------------------
+          <br/><br/>
           coding is life , <br/><br/>
-          and I love my life ,  <br/><br/>
+          I love my life , <br/><br/>
           and make a good app .
         </h1>
         <h1 class="contact">
@@ -18,39 +21,72 @@
       <h1 class="qingblog-link" @click="gotoQingBlogLink">@ QingBlog</h1>
     </div>
     <div class="main">
-      <div class="nav-wrapper"></div>
+      <QBNav @onCategoryChange="getBlogByCategory"></QBNav>
+
+      <div class="blog-list">
+        <Loading :state="loadingState">
+          <QBBlogItem v-for="blog in blogs" :key="blog._id" :blog="blog"></QBBlogItem>
+        </Loading>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
-    export default {
-        name: "QBIndex",
-        data() {
-            return {}
-        },
-        methods: {
-          gotoQingBlogLink(){
-            window.open("https://github.com/li-xiaojun/QingBlogFrontend")
-          }
-        }
+  import QBNav from '../nav/QBNav'
+  import QBBlogItem from '../blog/QBBlogItem'
+  import BlogApi from '../../fed/api/blog'
+  import Loading from '../loading/QBLoading'
+
+  export default {
+    name: "QBIndex",
+    components: {
+      QBNav, QBBlogItem, Loading
+    },
+    data() {
+      return {
+        page: 1,
+        loadingState:0,
+        blogs: []
+      }
+    },
+    mounted() {
+
+    },
+    methods: {
+      gotoQingBlogLink() {
+        window.open("https://github.com/li-xiaojun/QingBlogFrontend")
+      },
+      getBlogByCategory(categoryId) {
+        this.loadingState = 0;
+        BlogApi.getBlogs(this.page, categoryId, data => {
+          this.blogs = []
+          this.blogs.push(...data.data.blogs);
+          setTimeout(()=>{
+            if(this.blogs.length===0){
+              this.loadingState = 2
+            }else {
+              this.loadingState = 1
+            }
+          }, 500)
+        });
+      }
     }
+  }
 </script>
 
 <style scoped lang="stylus">
-    @import "../../common/stylus/mixins.styl"
+  @import "../../common/stylus/mixins.styl"
   .container
     fullwh()
     display flex
     .left
       wh(18rem, 100%)
       position: relative
-      box-shadow: 0 0 .3em .2em rgba(10, 10, 10, 0.1)
-      transition all .6s
-      &:hover
-        box-shadow: 0 0 1.5em .5em rgba(10, 10, 10, 0.1)
+      flex-shrink 0 // 空间不足也不缩小，默认是缩小的
       .top
-        height:10rem
+        height: 10rem
         background-color: #6b677d;
       .bottom
         text-align center
@@ -62,7 +98,7 @@
         .intro
           font-size 1rem
           color #999
-          margin-top 4rem
+          margin-top 1.5rem
         .contact
           margin-top 4rem
           display flex
@@ -78,8 +114,6 @@
           .juejin-icon
             margin-left: 2rem;
             bg-image("juejin_ico.png")
-
-
 
       .qingblog-link
         position: absolute
@@ -104,14 +138,15 @@
         background-size cover
 
     .main
-      height: 100%
       flex-grow 1
-      overflow-y auto
-      background-color: #ccc;
-      .nav-wrapper
-        height: 4rem
-        background-color: #fff;
-        border-bottom 1px solid #ccc
+      display flex
+      flex-direction column
+      background-color: #efefef;
+      .blog-list
+        flex-grow 1
+        overflow: hidden;
+        fullwh()
+
 
 
 </style>

@@ -19,7 +19,7 @@ axios.interceptors.response.use(function (response) {
   log(response.data);
   return response;
 }, function (err) {
-  log(err.response)
+  log(err.response);
   return Promise.reject(err);
 });
 
