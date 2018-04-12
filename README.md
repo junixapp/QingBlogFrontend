@@ -1,4 +1,5 @@
 # QingBlog前端
+> Qing， 既为**轻**， 又为**青**，my lover。
 
 基于Vue2套件，Axios, ElementUI编写的单页应用。
 
