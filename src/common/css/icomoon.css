@@ -30,3 +30,13 @@
 .icon-price-tags:before {
   content: "\e936";
 }
+
+.icon-search:before {
+  content: "\e986";
+}
+.icon-arrow-right:before {
+  content: "\ea3c";
+}
+.icon-arrow-left:before {
+  content: "\ea40";
+}
