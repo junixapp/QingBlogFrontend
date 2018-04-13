@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-wrapper hoverable">
+  <div class="blog-wrapper hoverable" >
     <!--标题区-->
     <div class="title-wrapper">
       <span class="vertical-line"></span>
@@ -8,7 +8,7 @@
     </div>
 
     <!--博客预览区-->
-    <div class="content-wrapper">
+    <div class="content-wrapper" @click="gotoBlogDetail">
       <BlogPreview :content="blog.content" :isLimitHeight="true"></BlogPreview>
     </div>
     <div class="line"></div>
@@ -17,7 +17,7 @@
     <div class="tag-wrapper">
       <i class="icon-price-tags"></i>
       <ul>
-        <li v-for="tag,index in blog.tags" @click="clickTag(tag)">{{tag}}</li>
+        <li v-for="tag,index in blog.tags" @click.stop="clickTag(tag)">{{tag}}</li>
       </ul>
 
     </div>
@@ -48,10 +48,10 @@
     },
     methods: {
       gotoBlogDetail() {
-
+        this.$log('click detail')
       },
       clickTag(tag){
-
+        this.$log(tag)
       }
     }
   }
@@ -64,7 +64,6 @@
     background-color: #fff;
     margin 0 0 2rem
     padding-bottom: 1.5rem;
-    cursor pointer
     .title-wrapper
       display flex
       .vertical-line
@@ -89,7 +88,7 @@
           padding-right: .5rem;
     .content-wrapper
       padding .5rem 4rem
-
+      cursor pointer
     .line
       border-bottom 1px solid #ddd
       margin 2rem 4rem
@@ -106,6 +105,7 @@
         display flex
         flex-wrap wrap
         & > li
+          cursor pointer
           height 1.4rem
           background-color: #b7977e;
           line-height 1.2rem

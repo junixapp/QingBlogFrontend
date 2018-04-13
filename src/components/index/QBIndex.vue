@@ -25,7 +25,15 @@
 
       <div class="blog-list">
         <Loading :state="loadingState">
+          <!--博客列表-->
           <QBBlogItem v-for="blog in blogs" :key="blog._id" :blog="blog"></QBBlogItem>
+
+          <!--分页组件-->
+          <Pager :totalCount="total"
+                 :currentPage.sync="page"
+                 @currentChange="onPageChange">
+          </Pager>
+
         </Loading>
       </div>
 
@@ -38,17 +46,20 @@
   import QBBlogItem from '../blog/QBBlogItem'
   import BlogApi from '../../fed/api/blog'
   import Loading from '../loading/QBLoading'
+  import Pager from '../pagination/QBPager'
 
   export default {
     name: "QBIndex",
     components: {
-      QBNav, QBBlogItem, Loading
+      QBNav, QBBlogItem, Loading, Pager
     },
     data() {
       return {
         page: 1,
-        loadingState:0,
-        blogs: []
+        loadingState: 0,
+        blogs: [],
+        total: 0,
+        categoryId: ''
       }
     },
     mounted() {
@@ -59,18 +70,24 @@
         window.open("https://github.com/li-xiaojun/QingBlogFrontend")
       },
       getBlogByCategory(categoryId) {
+        this.categoryId = categoryId;
         this.loadingState = 0;
         BlogApi.getBlogs(this.page, categoryId, data => {
           this.blogs = []
           this.blogs.push(...data.data.blogs);
-          setTimeout(()=>{
-            if(this.blogs.length===0){
+          this.total = data.data.total
+          setTimeout(() => {
+            if (this.blogs.length === 0) {
               this.loadingState = 2
-            }else {
+            } else {
               this.loadingState = 1
             }
-          }, 500)
+          }, 300)
         });
+      },
+      onPageChange(page){
+        this.page = page
+        this.getBlogByCategory(this.categoryId)
       }
     }
   }
@@ -146,7 +163,6 @@
         flex-grow 1
         overflow: hidden;
         fullwh()
-
 
 
 </style>
