@@ -1,10 +1,16 @@
 <template>
   <div class="loading-wrapper">
     <div class="load7">
-      <div class="loader" v-if="state===0"></div>
+      <transition name="fade">
+        <div class="loader" v-if="state===0"></div>
+      </transition>
     </div>
-    <div class="nodata" v-if="state===2">{{emptyText}}</div>
+
     <transition name="fade">
+      <div class="nodata" v-if="state===2">{{emptyText}}</div>
+    </transition>
+
+    <transition name="move">
       <div v-if="state===1" class="data-wrapper">
         <slot></slot>
       </div>
@@ -42,6 +48,7 @@
     fullwh()
     overflow hidden
     position: relative
+
   .nodata
     fullwh()
     position: absolute
@@ -55,22 +62,23 @@
     padding: 2rem
     overflow-y scroll
 
-
-  .fade-enter-active, .fade-leave-active {
+  .move-enter-active, .move-leave-active
     transition: all .4s;
-  }
 
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-  {
+  .move-enter, .move-leave-to /* .fade-leave-active below version 2.1.8 */
     opacity: 0;
     transform translateY(2rem)
-  }
+
+  .fade-enter-active, .fade-leave-active
+    transition: opacity .4s;
+
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+    opacity: 0;
 
   .load7
     display: flex
     fullwh()
     position: absolute
-
 
   .load7 .loader,
   .load7 .loader:before,
@@ -86,6 +94,7 @@
   }
 
   .load7 .loader {
+    top: -1.2rem
     color: #6b677d;
     font-size: .6rem;
     position: relative;

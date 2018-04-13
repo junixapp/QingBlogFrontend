@@ -1,7 +1,7 @@
 <template>
   <div class="blog-wrapper hoverable" >
     <!--标题区-->
-    <div class="title-wrapper">
+    <div class="title-wrapper" @click="gotoBlogDetail">
       <span class="vertical-line"></span>
       <span class="title">{{blog.title}}</span>
       <span class="date"><i class="icon-calendar"></i>{{updatedDate}}</span>
@@ -19,7 +19,6 @@
       <ul>
         <li v-for="tag,index in blog.tags" @click.stop="clickTag(tag)">{{tag}}</li>
       </ul>
-
     </div>
 
   </div>
@@ -48,7 +47,7 @@
     },
     methods: {
       gotoBlogDetail() {
-        this.$log('click detail')
+        this.$emit('openBlogDetail', this.blog)
       },
       clickTag(tag){
         this.$log(tag)
@@ -66,6 +65,7 @@
     padding-bottom: 1.5rem;
     .title-wrapper
       display flex
+      cursor pointer
       .vertical-line
         wh(.3rem, 4rem)
         background-color: #6b677d;
@@ -74,7 +74,7 @@
         line-height 4rem
         font-size 1.4rem
         font-weight: 600;
-        color #444
+        color #555
       .date
         flex-grow 1
         line-height 4rem

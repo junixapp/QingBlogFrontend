@@ -17,8 +17,7 @@
       },
       isLimitHeight: {
         type: Boolean,
-        default:
-          false
+        default: false
       }
     },
     data() {

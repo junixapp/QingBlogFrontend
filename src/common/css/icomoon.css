@@ -40,3 +40,7 @@
 .icon-arrow-left:before {
   content: "\ea40";
 }
+
+.icon-close:before {
+  content: "\ea0f";
+}

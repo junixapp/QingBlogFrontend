@@ -54,11 +54,11 @@
         cursor pointer
         transition all .3s
         &:hover
-          color #6b677d
+          color #575466
           background-color: #f1f1f1;
           border-bottom .3rem solid #6b677d
         &.current
-          color #6b677d
+          color #575466
           border-bottom .3rem solid #6b677d
 
 </style>
