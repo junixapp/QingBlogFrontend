@@ -3,9 +3,17 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const fs = require('fs')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
+}
+
+// 纠正favicon路径
+function correctFaviconDir(spa) {
+  let html = fs.readFileSync(resolve('index.html')).toString()
+  let correctHtml = html.replace(/\/([a-zA-Z]+)\/favicon.ico/, `/${spa}/favicon.ico`)
+  fs.writeFileSync(resolve('index.html'), correctHtml)
 }
 
 let currentSpa = 'fed';
@@ -13,6 +21,8 @@ let currentSpa = 'fed';
 config.build.assetsSubDirectory = currentSpa;
 //配置prod编译产出的SPA页面的html
 config.build.index = path.resolve(__dirname, `../dist/${currentSpa}/index.html`)
+correctFaviconDir(currentSpa)
+
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
