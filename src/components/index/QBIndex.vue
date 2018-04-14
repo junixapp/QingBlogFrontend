@@ -20,6 +20,7 @@
         </div>
         <div class="avatar"></div>
         <h1 class="qingblog-link" @click="gotoQingBlogLink">@ QingBlog</h1>
+        <h1 class="stat-num">访问量 {{accessCount}}</h1>
       </div>
       <div class="main">
         <QBNav @onCategoryChange="getBlogByCategory"></QBNav>
@@ -63,6 +64,7 @@
   import QBNav from '../nav/QBNav'
   import QBBlogItem from '../blog/QBBlogItem'
   import BlogApi from '../../fed/api/blog'
+  import StatApi from '../../fed/api/stat'
   import Loading from '../loading/QBLoading'
   import Pager from '../pagination/QBPager'
   import BlogPreview from '../blog/QBBlogPreview'
@@ -80,13 +82,21 @@
         total: 0,
         categoryId: '',
         blogDetail: '',
-        isShowDetail: false
+        isShowDetail: false,
+        accessCount: 0
       }
     },
     mounted() {
-
+      // 记录访问信息
+      StatApi.addStat('/')
+      this.getAccessCount();
     },
     methods: {
+      getAccessCount(){
+        StatApi.getAccessCount(data=>{
+          this.accessCount = data.data
+        })
+      },
       gotoQingBlogLink() {
         window.open("https://github.com/li-xiaojun/QingBlogFrontend")
       },
@@ -234,6 +244,14 @@
         transform translateX(-50%)
       .qingblog-link:hover
         color #6b677d
+      .stat-num
+        position: absolute
+        bottom 2rem
+        color #888
+        text-align center
+        left 50%
+        transform translateX(-50%)
+        font-size .8rem
 
       .avatar
         wh(8rem, 8rem)
