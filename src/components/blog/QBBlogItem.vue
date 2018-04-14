@@ -9,7 +9,7 @@
 
     <!--博客预览区-->
     <div class="content-wrapper" @click="gotoBlogDetail">
-      <BlogPreview :content="blog.content" :isLimitHeight="true"></BlogPreview>
+      <BlogPreview :content="blog.content" :isLimitHeight="isLimit"></BlogPreview>
     </div>
     <div class="line"></div>
 
@@ -38,11 +38,13 @@
       return {}
     },
     mounted() {
-
     },
     computed: {
       updatedDate() {
         return new Date(this.blog.updatedAt).toLocaleString('en')
+      },
+      isLimit(){
+        return this.blog.category.name !== 'AboutMe'
       }
     },
     methods: {

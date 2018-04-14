@@ -14,8 +14,8 @@
             and make a good app .
           </h1>
           <h1 class="contact">
-            <div class="github-icon icon"></div>
-            <div class="juejin-icon icon"></div>
+            <div class="github-icon icon" @click="gotoGithub"></div>
+            <div class="juejin-icon icon" @click="gotoJuejin"></div>
           </h1>
         </div>
         <div class="avatar"></div>
@@ -89,6 +89,12 @@
     methods: {
       gotoQingBlogLink() {
         window.open("https://github.com/li-xiaojun/QingBlogFrontend")
+      },
+      gotoGithub() {
+        window.open("https://github.com/li-xiaojun")
+      },
+      gotoJuejin() {
+        window.open("https://juejin.im/user/5641635660b25b79e65bdb4c")
       },
       getBlogByCategory(categoryId) {
         if(this.categoryId !== categoryId){
