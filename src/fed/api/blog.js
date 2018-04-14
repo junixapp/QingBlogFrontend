@@ -9,7 +9,15 @@ function getBlogs(page, categoryId, cb) {
     })
 }
 
+function addReadCount(id, cb) {
+  axios.post('/blogs/addReadCount',{id:id})
+    .then((response)=>{
+      cb(response.data)
+    })
+}
+
+
 
 export default {
-  getBlogs
+  getBlogs, addReadCount
 }

@@ -124,6 +124,8 @@
       onOpenBlogDetail(blog) {
         this.blogDetail = blog;
         this.isShowDetail = true;
+        // 增加阅读量
+        BlogApi.addReadCount(blog._id,data=>{})
       }
     }
   }
