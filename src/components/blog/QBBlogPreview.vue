@@ -1,13 +1,31 @@
 <template>
   <div :class="{'limit-height': isLimitHeight}">
-    <article class="markdown-body" v-html="content">
+    <article class="markdown-body" v-html="markdContent">
     </article>
   </div>
 </template>
 
 <script>
   import './github.css'
+  import './androidstudio.css' // hightjs样式
+  import './highlight.js'
+  hljs.initHighlightingOnLoad();
 
+  const md = require('markdown-it')({
+    highlight: function (str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          console.log(lang);
+          return '<pre class="hljs"><code>' +
+            hljs.highlight(lang, str, true).value +
+            '</code></pre>';
+        } catch (__) {}
+      }
+      return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+    }
+  });
+
+  // const md = new MarkdownIt();
   export default {
     name: "QBBlogPreview",
     props: {
@@ -27,7 +45,11 @@
     mounted() {
     }
     ,
-    methods: {}
+    computed: {
+      markdContent(){
+        return md.render(this.content)
+      }
+    }
   }
 </script>
 

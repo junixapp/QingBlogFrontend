@@ -13,7 +13,8 @@
     "autosize": "^4.0.1",
     "axios": "^0.16.2",
     "element-ui": "^2.0.8",
-    "marked": "^0.3.19",
+    "highlight.js": "^9.12.0",
+    "markdown-it": "^8.4.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

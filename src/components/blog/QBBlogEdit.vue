@@ -98,13 +98,8 @@
   import CategoryApi from '../../admin/api/category'
   import AutosizeTextarea from './AutosizeTextarea'
   import BlogPreview from './QBBlogPreview'
-  import markd from 'marked'
 
 
-  markd.setOptions({
-    breaks: true,
-    headerIds: false,
-  });
 
   export default {
     name: "QBBlogEdit",
@@ -277,7 +272,7 @@
 
       },
       onChange(val) {
-        this.ruleForm.content = markd(val);
+        this.ruleForm.content = val;
       }
     }
   }
