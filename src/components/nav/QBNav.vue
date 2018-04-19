@@ -1,7 +1,7 @@
 <template>
   <div class="nav-wrapper">
     <ul>
-      <li v-for="(c,index) in categories" :class="{current: index===currentIndex}" @click="changeCategory(index)">{{c.name}}</li>
+      <li v-for="(c,index) in categories" :class="{current: index===currentIndex}" @click="changeCategory(index)">{{c}}</li>
     </ul>
   </div>
 </template>
@@ -12,22 +12,24 @@
     name: "QBNav",
     data() {
       return {
-        categories: [],
+        categories: ['NodeJs','CSS','Vue','Android', 'Web开发', 'Docker', 'AboutMe'],
         currentIndex: 0
       }
     },
     mounted() {
-      CategoryApi.getAllCategories(data=>{
-        this.categories = []
-        this.categories.push(...data.data.categories)
-        // 默认发送第0个
-        this.$emit('onCategoryChange', this.categories[0]._id)
-      })
+      // CategoryApi.getAllCategories(data=>{
+      //   this.categories = []
+      //   this.categories.push(...data.data.categories)
+      //   // 默认发送第0个
+      //   this.$emit('onCategoryChange', this.categories[0]._id)
+      // })
+      this.$emit('onCategoryChange', this.categories[0])
     },
     methods: {
       changeCategory(index){
         this.currentIndex = index
-        this.$emit('onCategoryChange', this.categories[index]._id)
+        // this.$emit('onCategoryChange', this.categories[index]._id)
+        this.$emit('onCategoryChange', this.categories[index])
       }
     }
   }

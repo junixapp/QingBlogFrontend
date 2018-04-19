@@ -8,6 +8,13 @@ function getBlogs(page, categoryId, cb) {
       cb(response.data)
     })
 }
+//根据分类的名字
+function getBlogsByCategoryName(page, categoryName, cb) {
+  axios.get(`/blogs?page=${page}&categoryName=${categoryName}`)
+    .then((response)=>{
+      cb(response.data)
+    })
+}
 
 function addReadCount(id, cb) {
   axios.post('/blogs/addReadCount',{id:id})
@@ -19,5 +26,5 @@ function addReadCount(id, cb) {
 
 
 export default {
-  getBlogs, addReadCount
+  getBlogs, addReadCount, getBlogsByCategoryName
 }

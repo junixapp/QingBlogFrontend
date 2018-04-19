@@ -23,7 +23,7 @@
         <h1 class="stat-num">访问量 {{accessCount}}</h1>
       </div>
       <div class="main">
-        <QBNav @onCategoryChange="getBlogByCategory"></QBNav>
+        <QBNav @onCategoryChange="getBlogsByCategoryName"></QBNav>
 
         <div class="blog-list">
           <Loading :state="loadingState">
@@ -80,7 +80,7 @@
         loadingState: 0,
         blogs: [],
         total: 0,
-        categoryId: '',
+        categoryName: '',
         blogDetail: '',
         isShowDetail: false,
         accessCount: 0
@@ -106,15 +106,15 @@
       gotoJuejin() {
         window.open("https://juejin.im/user/5641635660b25b79e65bdb4c")
       },
-      getBlogByCategory(categoryId) {
-        if(this.categoryId !== categoryId){
+      getBlogsByCategoryName(categoryName) {
+        if(this.categoryName !== categoryName){
           // 说明换分类了，要重置page
           this.page = 1;
         }
-        this.categoryId = categoryId;
+        this.categoryName = categoryName;
         this.loadingState = 0;
 
-        BlogApi.getBlogs(this.page, categoryId, data => {
+        BlogApi.getBlogsByCategoryName(this.page, categoryName, data => {
           this.blogs = []
           this.blogs.push(...data.data.blogs);
           this.total = data.data.total
@@ -129,7 +129,7 @@
       },
       onPageChange(page) {
         this.page = page
-        this.getBlogByCategory(this.categoryId)
+        this.getBlogsByCategoryName(this.categoryName)
       },
       onOpenBlogDetail(blog) {
         this.blogDetail = blog;
