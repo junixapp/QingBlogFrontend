@@ -41,7 +41,7 @@
     },
     computed: {
       updatedDate() {
-        return new Date(this.blog.updatedAt).toLocaleString('en')
+        return new Date(this.blog.createdAt).toLocaleString('en')
       },
       isLimit(){
         return this.blog.category.name !== 'AboutMe'

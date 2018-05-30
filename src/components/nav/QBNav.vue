@@ -12,7 +12,7 @@
     name: "QBNav",
     data() {
       return {
-        categories: ['NodeJs','CSS','Vue','Android', 'Web开发', 'Docker', 'AboutMe'],
+        categories: ['NodeJs','CSS','Vue','Android', 'Web开发', 'Docker', 'SpringBoot系列','AboutMe'],
         currentIndex: 0
       }
     },

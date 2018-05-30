@@ -254,7 +254,7 @@
               tags: this.tags,
               content: this.ruleForm.content,
               category: this.ruleForm.category
-            }
+            };
             if (this.type === 1) {
               BlogApi.addBlog(blog, (data) => {
                 this.$message.success(data.msg)

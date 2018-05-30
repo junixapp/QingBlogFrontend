@@ -129,6 +129,7 @@
         })
       },
       handleEdit(index) {
+
         //check login
         if(!this.$store.state.token){
           this.$router.push('login')
