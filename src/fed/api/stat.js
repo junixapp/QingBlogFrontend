@@ -6,7 +6,7 @@ function addStat(visit_url) {
   let data = {
     visit_ip: returnCitySN["cip"],
     user_agent: navigator.userAgent,
-    visit_area: remote_ip_info.country + remote_ip_info.province + remote_ip_info.city,
+    visit_area: returnCitySN.cname,
     visit_url: visit_url,
     visit_time: new Date().getTime()
   };

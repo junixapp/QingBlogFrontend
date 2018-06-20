@@ -88,7 +88,7 @@
     },
     mounted() {
       // 记录访问信息
-      StatApi.addStat('/')
+      StatApi.addStat('/');
       this.getAccessCount();
     },
     methods: {
