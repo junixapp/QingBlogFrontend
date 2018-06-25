@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/index'
+import QBIndex from '../../components/index/QBIndex'
+import QBDetail from '../../components/detail/QBDetail'
 
 Vue.use(Router);
 
@@ -11,14 +13,21 @@ const router = new Router({
     {
       path: '/',
       name: 'index',
-      component: () => import("../../components/index/QBIndex"),
+      component: QBIndex,
       meta: {
         pageTitle: '李晓俊'
       }
     },
-
+    {
+      path: '/detail',
+      name: 'detail',
+      component: QBDetail,
+      meta: {
+        pageTitle: '博客详情'
+      }
+    },
   ]
-})
+});
 
 router.beforeEach((to, from, next) => {
   //set html title

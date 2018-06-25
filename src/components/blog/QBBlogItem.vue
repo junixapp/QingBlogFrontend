@@ -10,6 +10,7 @@
     <!--博客预览区-->
     <div class="content-wrapper" @click="gotoBlogDetail">
       <BlogPreview :content="blog.content" :isLimitHeight="isLimit"></BlogPreview>
+      <div class="more">more >></div>
     </div>
     <div class="line"></div>
 
@@ -49,7 +50,7 @@
     },
     methods: {
       gotoBlogDetail() {
-        this.$emit('openBlogDetail', this.blog)
+        this.$router.push({name: "detail", params: {blog: this.blog}})
       },
       clickTag(tag){
         this.$log(tag)
@@ -91,6 +92,12 @@
     .content-wrapper
       padding .5rem 4rem
       cursor pointer
+      position relative
+      .more
+        position: absolute
+        right 4rem
+        color #aaa
+        font-size 1.4rem
     .line
       border-bottom 1px solid #ddd
       margin 2rem 4rem

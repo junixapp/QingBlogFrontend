@@ -42,21 +42,6 @@
       </div>
     </div>
 
-    <!--博客详情-->
-
-    <transition name="fade">
-      <div class="shade" v-if="isShowDetail" @click="isShowDetail=false"></div>
-    </transition>
-
-    <transition name="move">
-      <div class="detail-wrapper" v-if="isShowDetail">
-        <i class="icon-close" @click="isShowDetail=false"></i>
-        <div class="preview-wrapper" >
-          <div class="blog-title">{{blogDetail.title}}</div>
-          <BlogPreview :content="blogDetail.content"></BlogPreview>
-        </div>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -82,7 +67,6 @@
         total: 0,
         categoryName: '',
         blogDetail: '',
-        isShowDetail: false,
         accessCount: 0
       }
     },
@@ -133,7 +117,6 @@
       },
       onOpenBlogDetail(blog) {
         this.blogDetail = blog;
-        this.isShowDetail = true;
         // 增加阅读量
         BlogApi.addReadCount(blog._id,data=>{})
       }
@@ -155,47 +138,6 @@
     bottom: 0;
     position: absolute
     background-color: rgba(10, 10, 10, .5);
-
-  .detail-wrapper
-    z-index 16
-    left: 18rem
-    top: 0
-    right 0
-    bottom: 0;
-    position: absolute
-    box-shadow 0 0 2rem 1rem rgba(10, 10, 10, .1)
-    .icon-close
-      position: absolute;
-      top:1rem
-      left:1rem
-      font-size 1.2rem
-      color #555263
-      cursor: pointer;
-    .preview-wrapper
-      fullwh()
-      overflow-y auto
-      background-color: #fff;
-      padding:3rem 6rem
-      .blog-title
-        text-align center
-        font-size 1.6rem
-        font-weight: 600;
-        color #222
-        margin-bottom 2rem
-
-
-  .move-enter-active, .move-leave-active
-    transition: transform .5s ease;
-
-  .move-enter, .move-leave-to /* .fade-leave-active below version 2.1.8 */
-    transform translateX(100%)
-    box-shadow 0 0 0 0 rgba(10, 10, 10, .1)
-
-  .fade-enter-active, .fade-leave-active
-    transition: opacity .6s;
-
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-    opacity: 0;
 
   .container
     fullwh()
