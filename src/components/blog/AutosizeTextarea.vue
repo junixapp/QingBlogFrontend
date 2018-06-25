@@ -1,5 +1,5 @@
 <template>
-  <textarea @input="handleChange" @keydown.tab.prevent="addTabIndent()" ref="autoTextArea">{{ value }}</textarea>
+  <textarea @input="handleChange" @keydown.tab.prevent="addTabIndent()" ref="autoTextArea" :style="styleObj">{{ value }}</textarea>
 </template>
 
 <script>
@@ -7,9 +7,13 @@
 
   export default {
     name: "AutosizeTextArea",
-    props: ['value'],
+    props: ['value', 'min-height'],
     data() {
-      return {}
+      return {
+        styleObj:{
+          'min-height':this.min-height
+        }
+      }
     },
     mounted() {
       autosize(this.$el)
