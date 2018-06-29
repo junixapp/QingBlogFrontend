@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-wrapper hoverable" >
+  <div class="blog-wrapper hoverable">
     <!--标题区-->
     <div class="title-wrapper" @click="gotoBlogDetail">
       <span class="vertical-line"></span>
@@ -20,7 +20,12 @@
       <ul>
         <li v-for="tag,index in blog.tags" @click.stop="clickTag(tag)">{{tag}}</li>
       </ul>
+
+      <div class="readcount">
+        {{blog.readCount}} views
+      </div>
     </div>
+
 
   </div>
 </template>
@@ -28,6 +33,7 @@
 <script>
   import '../../common/css/icomoon.css'
   import BlogPreview from './QBBlogPreview'
+  import BlogApi from '../../fed/api/blog'
 
   export default {
     name: "QBBlogItem",
@@ -44,15 +50,18 @@
       updatedDate() {
         return new Date(this.blog.createdAt).toLocaleString('en')
       },
-      isLimit(){
+      isLimit() {
         return this.blog.category.name !== 'AboutMe'
       }
     },
     methods: {
       gotoBlogDetail() {
         this.$router.push({name: "detail", params: {blog: this.blog}})
+        // 增加阅读量
+        BlogApi.addReadCount(blog._id, data => {
+        })
       },
-      clickTag(tag){
+      clickTag(tag) {
         this.$log(tag)
       }
     }
@@ -134,4 +143,7 @@
             top 0.15rem
             left -0.35rem
             transform rotate(45deg)
+    .readcount
+      color #999
+      font-size .9rem
 </style>

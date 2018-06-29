@@ -28,8 +28,7 @@
         <div class="blog-list">
           <Loading :state="loadingState">
             <!--博客列表-->
-            <QBBlogItem v-for="blog in blogs" :key="blog._id" :blog="blog"
-                        @openBlogDetail="onOpenBlogDetail"></QBBlogItem>
+            <QBBlogItem v-for="blog in blogs" :key="blog._id" :blog="blog"></QBBlogItem>
 
             <!--分页组件-->
             <Pager :totalCount="total"
@@ -66,7 +65,6 @@
         blogs: [],
         total: 0,
         categoryName: '',
-        blogDetail: '',
         accessCount: 0
       }
     },
@@ -114,11 +112,6 @@
       onPageChange(page) {
         this.page = page
         this.getBlogsByCategoryName(this.categoryName)
-      },
-      onOpenBlogDetail(blog) {
-        this.blogDetail = blog;
-        // 增加阅读量
-        BlogApi.addReadCount(blog._id,data=>{})
       }
     }
   }

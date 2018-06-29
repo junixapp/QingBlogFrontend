@@ -39,6 +39,7 @@
     deactivated(){
       this.nickname = '';
       this.content = '';
+      this.errmsg = '';
     },
     methods: {
       handleClick() {
