@@ -2,10 +2,10 @@
   <div>
     <transition name="move">
       <div v-show="isShow">
-        <div class="title">{{blog.title}}</div>
+        <div class="title">{{$store.state.blog.title}}</div>
         <div class="detail-wrapper">
-          <blog-preview :content="blog.content"></blog-preview>
-          <comment-edit :blog-id="blog._id" @create-comment="onCreateComment"></comment-edit>
+          <blog-preview :content="$store.state.blog.content"></blog-preview>
+          <comment-edit :blog-id="$store.state.blog._id" @create-comment="onCreateComment"></comment-edit>
           <comment :total="total" :list="comments"></comment>
           <div class="more-wrapper" v-show="!isHideMoreComment" @click="getNextPageComments">
             view more comment ...
@@ -38,7 +38,6 @@
       }
     },
     mounted() {
-
     },
     computed: {
       isHideMoreComment() {
@@ -46,11 +45,15 @@
       }
     },
     activated() {
-      this.blog = this.$route.params.blog;
-      setTimeout(() => {
-        this.isShow = this.blog.title.length > 0;
-      }, 100)
-      this.getComments();
+      this.$nextTick(()=>{
+        console.log(this.$store.state.blog);
+        setTimeout(() => {
+          console.log();
+          this.isShow = this.$store.state.blog.title.length > 0;
+        }, 100);
+        this.getComments();
+      });
+
     },
     deactivated() {
       this.isShow = false;
@@ -58,7 +61,7 @@
     methods: {
       getComments() {
         this.page = 1;
-        CommonApi.getComments(this.page, this.blog._id, (body) => {
+        CommonApi.getComments(this.page, this.$store.state.blog._id, (body) => {
           if (body.code === 0) {
             this.total = body.data.total;
             this.comments = [];
@@ -71,7 +74,7 @@
       },
       getNextPageComments(){
         this.page += 1;
-        CommonApi.getComments(this.page, this.blog._id, (body) => {
+        CommonApi.getComments(this.page, this.$store.state.blog._id, (body) => {
           if (body.code === 0) {
             this.total = body.data.total;
             this.comments.push(...body.data.comments)

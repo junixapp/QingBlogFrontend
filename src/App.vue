@@ -7,7 +7,13 @@
 <script>
 
   export default {
-    name: 'app'
+    name: 'app',
+    mounted(){
+      let path = window.location.href.split("#")[1] || "/";
+      if(!(path === "/")){
+        this.$router.push(path)
+      }
+    }
   }
 </script>
 

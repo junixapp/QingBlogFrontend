@@ -56,9 +56,10 @@
     },
     methods: {
       gotoBlogDetail() {
-        this.$router.push({name: "detail", params: {blog: this.blog}})
+        this.$store.commit("saveBlog", this.blog)
+        this.$router.push({name: "detail"})
         // 增加阅读量
-        BlogApi.addReadCount(blog._id, data => {
+        BlogApi.addReadCount(this.blog._id, data => {
         })
       },
       clickTag(tag) {

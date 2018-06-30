@@ -5,8 +5,9 @@ Vue.use(Vuex)
 
 const state = {
   user: null,
-  token: null
-}
+  token: null,
+  blog: JSON.parse(localStorage.blog || "{}")
+};
 
 const mutations = {
   saveUser(state, user){
@@ -22,6 +23,10 @@ const mutations = {
     state.token = null
     localStorage.removeItem('user')
     localStorage.removeItem('token')
+  },
+  saveBlog(state, blog){
+    state.blog = blog;
+    localStorage.blog = JSON.stringify(blog)
   }
 }
 
